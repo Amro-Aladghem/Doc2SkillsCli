@@ -23,6 +23,7 @@ class ConverterConfig:
     cleanup_tags: tuple = ('nav', 'footer', 'script', 'style', 'header', 'aside')
     
     api_key = ""
+    max_content_size = 3500
     
     # Chrome driver settings
     chrome_driver_path: Optional[str] = None
