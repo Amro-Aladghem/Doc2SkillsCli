@@ -10,15 +10,11 @@ from typing import Optional
 class ConverterConfig:
     """Configuration for the documentation converter"""
     
+    
     # Browser settings
     headless: bool = True
     window_size: str = "1920,1080"
     page_load_timeout: int = 30
-    
-    # Expansion settings
-    max_expansion_levels: int = 4
-    expansion_wait_time: float = 2.0
-    initial_load_wait: float = 5.0
     
     # Extraction settings
     output_base_dir: str = ".bob/skills"
@@ -26,12 +22,7 @@ class ConverterConfig:
     # HTML cleanup tags
     cleanup_tags: tuple = ('nav', 'footer', 'script', 'style', 'header', 'aside')
     
-    # Expansion markers for heuristic detection
-    expansion_markers: tuple = (
-        "expand", "toggle", "chevron", "arrow", "down",
-        "folder", "tree-node", "plus", "icon-up", "icon-down",
-        "ibmdocs-expand-icon"
-    )
+    api_key = ""
     
     # Chrome driver settings
     chrome_driver_path: Optional[str] = None

@@ -1,0 +1,26 @@
+# Doc2Skills Backend Requirements
+
+# Web scraping and browser automation
+selenium==4.15.2
+webdriver-manager==4.0.1
+
+# HTML parsing
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# Markdown conversion
+markdownify==0.11.6
+
+# HTTP requests (for future enhancements)
+requests==2.31.0
+
+# Type hints support
+typing-extensions==4.8.0
+
+# FastAPI and server dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+python-multipart==0.0.6
+
+google-genai==1.60.0
