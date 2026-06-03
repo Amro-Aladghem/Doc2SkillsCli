@@ -11,6 +11,7 @@ from typing import Optional, List, Dict
 from concurrent.futures import ThreadPoolExecutor
 from .config import ConverterConfig
 from .utils import BrowserManager, ContentProcessor, FileManager
+from ..backend.models import SkillData
 
 #(Changing here)  just keep single converter
 class DocumentationConverter:
@@ -117,45 +118,24 @@ class DocumentationConverter:
             
             # Get page content
             html_content = browser.get_page_source()
-            
-            # Extract title if needed
-            if extract_title:
-                soup = self.content_processor.parse_html(html_content)
-                title_tag = soup.find('title') or soup.find('h1')
-                if title_tag:
-                    result['title'] = title_tag.get_text(strip=True)
-                    # Clean GitHub titles to extract just the repo name
-                    result['title'] = self._clean_github_title(result['title'], url)
-            
-            # Extract library name from URL
-            library_name = self.file_manager.extract_library_name(url)
-            
-            # Extract description with page title and library context
-            description = self.content_processor.extract_description(
-                html_content=html_content,
-                page_title=result['title'],
-                library_name=library_name,
-                max_lines=2
-            )
-            
+
             # Convert to markdown
             markdown_content = self.content_processor.convert_to_markdown(html_content)
             
+            skill_data : SkillData = self.content_processor.get_skill_metedata_with_ai(markdown_content)
+
             # Format the document with metadata
             formatted_content = self.content_processor.format_markdown_document(
-                title=result['title'],
-                library=library_name,
-                source_url=url,
-                description=description,
+                skill_data,
                 content=markdown_content
             )
             
             # Save to file
-            safe_filename = self.content_processor.sanitize_filename(result['title'])
+            
             output_file = self.file_manager.save_markdown_file(
                 output_dir,
-                safe_filename,
-                formatted_content
+                formatted_content,
+                safe_filename=skill_data.file_name,
             )
             
             result['output_file'] = output_file
