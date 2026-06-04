@@ -1,10 +1,9 @@
 from google import genai
 from google.genai import types
-from Scripts.backend.models import SkillData
 import json
-from ..config import ConverterConfig
-from ..models import Config
-from file_manager import FileManager
+from ..models.SkillData import SkillData
+from ..models.Config import Config
+from .file_manager import FileManager
 
 
 SKILL_METADATA_PROMPT = """
@@ -44,9 +43,6 @@ Output format:
 
 REQUIRED_FIELDS = ("file_name", "title", "description")
 
-#load config data , Not: you can imporve it to be with object 
-config:Config = FileManager().load_config() 
-
 class AISkillDataGen:
     """Handles generation of skill metadata such as title and description."""
     
@@ -54,6 +50,7 @@ class AISkillDataGen:
     def get_gen_data(doc_text: str) -> SkillData:
         AISkillDataGen._validate_doc_text(doc_text)
 
+        config: Config = FileManager().load_config()
         resolved_api_key = config.api_key 
         if not resolved_api_key:
             raise ValueError("Google GenAI API key is required.") # you must edit the message error
@@ -88,6 +85,11 @@ class AISkillDataGen:
             raise ValueError("AI response JSON must be an object.")
 
         return data
+
+    @staticmethod
+    def _validate_doc_text(doc_text: str) -> None:
+        if not isinstance(doc_text, str) or not doc_text.strip():
+            raise ValueError("Documentation content is required.")
 
     @staticmethod
     def _validate_skill_data(data: dict) -> None:

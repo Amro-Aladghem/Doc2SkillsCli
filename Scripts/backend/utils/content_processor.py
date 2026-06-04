@@ -76,7 +76,7 @@ class ContentProcessor:
         header = f"""---
             title: {skill_data.title}
             description: {skill_data.description}
-        ---
+---
 """
         
         # Combine header with content (instructions section)

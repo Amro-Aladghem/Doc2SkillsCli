@@ -9,14 +9,14 @@ from ..config import ConverterConfig
 from pathlib import Path
 from platformdirs import user_config_dir
 import json
-from models import Config
+from ..models.Config import Config
 
 #(Changing here)  the files must not generated like this , it must be from config URI .
 class FileManager:
     """Manages files operations """
     
-    def __init__(self, config: ConverterConfig):
-        self.config = config
+    def __init__(self, config: Optional[ConverterConfig] = None):
+        self.config = config or ConverterConfig()
         
     def extract_library_name(self, url: str) -> str:
         """
@@ -56,7 +56,6 @@ class FileManager:
         file_path = path / f"{filename}.md"
         return str(file_path)
     
-    @staticmethod
     def prepare_default_configfile(self)->bool:
         config = {
             "api_key": ConverterConfig.default_api_key,
@@ -64,9 +63,7 @@ class FileManager:
             "max_content_size": ConverterConfig.default_max_content_size
         }
 
-        config_dir = Path(
-        user_config_dir("DocToSkill")
-        )
+        config_dir = Path(user_config_dir("DocToSkill"))
 
         config_dir.mkdir(parents=True, exist_ok=True)
 
@@ -77,24 +74,21 @@ class FileManager:
 
         return True
     
-    @staticmethod
     def update_file_api_key(self,api_key:str):
         with open(self.config.config_file_path, "r", encoding="utf-8") as f:
             config = json.load(f)
 
         config["api_key"] = api_key
 
-        with open(self.config_file_path, "w", encoding="utf-8") as f:
+        with open(self.config.config_file_path, "w", encoding="utf-8") as f:
             json.dump(config, f, indent=4)
 
-    @staticmethod
     def load_config(self)-> Config:
         with open(self.config.config_file_path, "r", encoding="utf-8") as f:
             config = json.load(f)
         
         return Config(**config)
     
-    @staticmethod
     def config_file_exist(self) -> bool:
         path = Path(self.config.config_file_path)
         return path.exists() and path.is_file()

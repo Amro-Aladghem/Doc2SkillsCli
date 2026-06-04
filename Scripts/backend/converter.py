@@ -11,7 +11,7 @@ from typing import Optional, List, Dict
 from concurrent.futures import ThreadPoolExecutor
 from .config import ConverterConfig
 from .utils import BrowserManager, ContentProcessor, FileManager
-from ..backend.models import SkillData
+from .models.SkillData import SkillData
 
 #(Changing here)  just keep single converter
 class DocumentationConverter:
@@ -130,8 +130,8 @@ class DocumentationConverter:
             
             output_file = self.file_manager.save_markdown_file(
                 output_dir,
+                skill_data.file_name,
                 formatted_content,
-                safe_filename=skill_data.file_name,
             )
             
             result['output_file'] = output_file
