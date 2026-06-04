@@ -32,14 +32,14 @@ class FileManager:
         Returns the full path of the saved file
         """
         # check and get the file full path for saving 
-        filepath = self.check_return_path(directory,filename)
+        filepath = self.prepare_output_file_path(directory,filename)
                 
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(content)
         
         return filepath
     
-    def check_return_path(self,directory:str,filename:str)->str:
+    def prepare_output_file_path(self,directory:str,filename:str)->str:
         """
         Returns the full path and check
         """
