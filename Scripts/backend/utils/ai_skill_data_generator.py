@@ -44,8 +44,8 @@ Output format:
 
 REQUIRED_FIELDS = ("file_name", "title", "description")
 
-
-config:Config = FileManager().load_config()
+#load config data , Not: you can imporve it to be with object 
+config:Config = FileManager().load_config() 
 
 class AISkillDataGen:
     """Handles generation of skill metadata such as title and description."""
