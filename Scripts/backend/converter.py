@@ -49,19 +49,16 @@ class DocumentationConverter:
         
         try:
             # Setup output directory
-            output_path = self.file_manager.get_output_directory(page_url, output_dir)
-            result['output_directory'] = output_path
             
             print(f"[*] Starting Single Page Conversion")
             print(f"[*] Source: {page_url}")
-            print(f"[*] Output: {output_path}")
             
             with self.browser_manager as browser:
                 page_result = self._process_single_page(
                     browser=browser,
                     url=page_url,
                     title=custom_title,
-                    output_dir=output_path,
+                    output_dir=output_dir,
                     extract_title=custom_title is None
                 )
                 
@@ -69,7 +66,6 @@ class DocumentationConverter:
             
             if result['success']:
                 print(f"\n[✓] Single Page Conversion Complete!")
-                print(f"[✓] Output file: {result['output_file']}")
             
         except Exception as e:
             print(f"\n[✗] Conversion failed: {str(e)}")
