@@ -4,6 +4,8 @@ Configuration module for Doc2Skills converter
 import os
 from dataclasses import dataclass
 from typing import Optional
+from pathlib import Path
+from platformdirs import user_config_dir
 
 
 @dataclass
@@ -22,8 +24,12 @@ class ConverterConfig:
     # HTML cleanup tags
     cleanup_tags: tuple = ('nav', 'footer', 'script', 'style', 'header', 'aside')
     
-    api_key = ""
-    max_content_size = 3500
+    default_api_key = ""
+    default_max_content_size = 3500
+    default_model="gemma-4-31b-it"
+
+    config_dir = Path(user_config_dir("DocToSkill"))
+    config_file_path = config_dir / "config.json"
     
     # Chrome driver settings
     chrome_driver_path: Optional[str] = None

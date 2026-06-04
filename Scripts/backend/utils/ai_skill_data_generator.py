@@ -3,6 +3,8 @@ from google.genai import types
 from Scripts.backend.models import SkillData
 import json
 from ..config import ConverterConfig
+from ..models import Config
+from file_manager import FileManager
 
 
 SKILL_METADATA_PROMPT = """
@@ -40,26 +42,27 @@ Output format:
 """
 
 
-MODEL_NAME = "gemma-4-31b-it"
 REQUIRED_FIELDS = ("file_name", "title", "description")
 
 
+config:Config = FileManager().load_config()
+
 class AISkillDataGen:
     """Handles generation of skill metadata such as title and description."""
-
+    
     @staticmethod
     def get_gen_data(doc_text: str) -> SkillData:
         AISkillDataGen._validate_doc_text(doc_text)
 
-        resolved_api_key = ConverterConfig.api_key 
+        resolved_api_key = config.api_key 
         if not resolved_api_key:
             raise ValueError("Google GenAI API key is required.") # you must edit the message error
 
 
-        doc_content = doc_text[:ConverterConfig.max_content_size]
+        doc_content = doc_text[:config.max_content_size]
         client = genai.Client(api_key=resolved_api_key)
         response = client.models.generate_content(
-            model=MODEL_NAME,
+            model=config.model,
             contents=f"{SKILL_METADATA_PROMPT}\nDocumentation text:\n{doc_content}",
             config=types.GenerateContentConfig(
                 response_mime_type="application/json",
