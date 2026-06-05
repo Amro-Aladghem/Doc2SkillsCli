@@ -22,9 +22,14 @@ class ContentProcessor:
         return BeautifulSoup(html_content, 'html.parser')
     
     def cleanup_html(self, soup: BeautifulSoup) -> BeautifulSoup:
-        """Remove unwanted HTML elements (nav, footer, scripts, etc.)"""
+        """Remove unwanted HTML elements and strip links while keeping their text."""
+
         for tag in soup(self.config.cleanup_tags):
             tag.decompose()
+
+        for a in soup.find_all("a"):
+            a.unwrap()
+
         return soup
     
     def convert_to_markdown(self, html_content: str) -> str:

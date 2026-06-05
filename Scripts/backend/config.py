@@ -19,7 +19,7 @@ class ConverterConfig:
     page_load_timeout: int = 30
     
     # Extraction settings
-    output_base_dir: str = ".bob/skills"
+    output_base_dir: str = ""
     
     # HTML cleanup tags
     cleanup_tags: tuple = ('nav', 'footer', 'script', 'style', 'header', 'aside')
