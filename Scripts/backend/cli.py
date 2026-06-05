@@ -6,7 +6,7 @@ from .config import ConverterConfig
 from .converter import convert_single_page
 from .utils.file_manager import FileManager
 
-app = typer.Typer(help="Convert documentation pages into Codex skill files.")
+app = typer.Typer(help="Convert documentation pages into skill files.")
 
 
 def prompt_for_api_key(file_manager: FileManager) -> None:
@@ -43,6 +43,18 @@ def init() -> None:
     if not config.api_key.strip():
         prompt_for_api_key(file_manager)
         typer.echo("Config file updated.")
+
+
+@app.command("update-api-key")
+def update_api_key() -> None:
+    """Update the Gemini API key in the config file."""
+    file_manager = FileManager(ConverterConfig())
+
+    if not file_manager.config_file_exist():
+        file_manager.prepare_default_configfile()
+
+    prompt_for_api_key(file_manager)
+    typer.echo("API key updated.")
 
 
 @app.command()
