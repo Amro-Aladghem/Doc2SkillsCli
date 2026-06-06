@@ -53,7 +53,7 @@ class BrowserManager:
         if not self.driver:
             raise RuntimeError("Driver not initialized. Call initialize_driver() first.")
         
-        print(f"[*] Loading: {url}")
+        print(f"[*] Loading: {url}...")
         self.driver.get(url)
         time.sleep(wait_time or self.config.initial_load_wait)
     
