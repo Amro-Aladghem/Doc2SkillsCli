@@ -1,3 +1,7 @@
+<p align="center">
+<img width="200" height="70" alt="Screenshot 2026-06-06 213806" src="https://github.com/user-attachments/assets/057d6a8a-d1a4-4a08-8060-b00ff2f0505f" />
+</p>
+
 # Doc2Skills CLI
 
 A lightweight CLI tool that converts documentation pages into structured skill files for AI agents.
@@ -11,15 +15,20 @@ A lightweight CLI tool that converts documentation pages into structured skill f
 
 ---
 
-## Installation
+## Installation Via Pip
 
 ```bash
 pip install doctoskills
-doctoskills init
+doctoskills init  #You will be asked to enter gemini api key here 
 ```
 
 ---
 
+## Usage In Any Project
+
+```bash
+doctoskills add <documentation-url> --output <output-directory>
+```
 ## Setup — Gemini API Key
 
 Doc2Skills uses `gemma-4-31b-it`, a free model from Google with the following limits:
@@ -32,11 +41,10 @@ For rate limit details, see the [Gemini API docs](https://ai.google.dev/gemini-a
 
 ---
 
-## Usage
-
-```bash
-doctoskills add <documentation-url> --output <output-directory>
-```
+<p align="center">
+  <video src="https://github.com/user-attachments/assets/0c98f620-b3d5-4a6f-be8b-34ad19ac42ec" width="30%" autoplay loop muted playsinline>
+  </video>
+</p>
 
 ### Example
 
@@ -130,6 +138,4 @@ Feel free to open an issue for bug reports, feature requests, or questions. All 
 
 ---
 
-## License
-
-MIT License — see [LICENSE](LICENSE) for details.
+Reach me: [ameraladghem@gmail.com](mailto:ameraladghem@gmail.com)
