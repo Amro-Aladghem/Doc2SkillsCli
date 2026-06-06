@@ -2,6 +2,15 @@
 <img width="200" height="70" alt="Screenshot 2026-06-06 213806" src="https://github.com/user-attachments/assets/057d6a8a-d1a4-4a08-8060-b00ff2f0505f" />
 </p>
 
+## Why Doc2Skills?
+
+Stop struggling with AI hallucinations and manual documentation research.
+
+- **Stop Hallucinations** — Converts docs into structured skill files, giving your AI agent a factual, grounded source of truth for any library or package.
+- **Zero Context-Switching** — No more leaving your IDE to hunt for API parameters across 50-page documentation sites.
+- **Permanent Intelligence** — Teach your AI assistant about any library once, and it will always have that knowledge available.
+- **Built for Teams** — Skill files are saved inside your project, so every team member's AI works from the same shared knowledge base.
+
 # Doc2Skills CLI
 
 A lightweight CLI tool that converts documentation pages into structured skill files for AI agents.
