@@ -1,6 +1,8 @@
 from google import genai
 from google.genai import types
+from google.genai.errors import APIError, ClientError, ServerError
 import json
+from typing import Optional
 from ..models.SkillData import SkillData
 from ..models.Config import Config
 from .file_manager import FileManager
@@ -47,28 +49,47 @@ class AISkillDataGen:
     """Handles generation of skill metadata such as title and description."""
     
     @staticmethod
-    def get_gen_data(doc_text: str) -> SkillData:
+    def get_gen_data(doc_text: str, config: Optional[Config] = None) -> SkillData:
         AISkillDataGen._validate_doc_text(doc_text)
 
-        config: Config = FileManager().load_config()
+        config = config or FileManager().load_config()
         resolved_api_key = config.api_key 
         if not resolved_api_key:
-            raise ValueError("Google GenAI API key is required.") # you must edit the message error
+            raise ValueError("Google GenAI API key is required.")
 
 
-        doc_content = doc_text[:config.max_content_size]
+        doc_content = doc_text[:int(config.max_content_size)]
         client = genai.Client(api_key=resolved_api_key)
-        response = client.models.generate_content(
-            model=config.model,
-            contents=f"{SKILL_METADATA_PROMPT}\nDocumentation text:\n{doc_content}",
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
+        try:
+            response = client.models.generate_content(
+                model=config.model,
+                contents=f"{SKILL_METADATA_PROMPT}\nDocumentation text:\n{doc_content}",
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                )
             )
-        )
+        except ClientError as exc:
+            AISkillDataGen._raise_client_error(exc)
+        except ServerError as exc:
+            raise RuntimeError("Gemini service error. Please try again later.") from exc
+        except APIError as exc:
+            raise RuntimeError("Gemini API error. Please try again.") from exc
 
         data = AISkillDataGen._parse_response(response.text)
         AISkillDataGen._validate_skill_data(data)
         return SkillData(**data)
+
+    @staticmethod
+    def _raise_client_error(exc: ClientError) -> None:
+        status_code = getattr(exc, "code", None)
+
+        if status_code in (401, 403):
+            raise ValueError("Invalid Gemini API key.") from exc
+
+        if status_code == 429:
+            raise RuntimeError("Gemini rate limit reached. Please wait and try again.") from exc
+
+        raise RuntimeError(f"Gemini request failed with status code {status_code}.") from exc
 
 
     @staticmethod

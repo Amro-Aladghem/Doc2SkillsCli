@@ -19,7 +19,7 @@ class BrowserManager:
         self.config = config
         self.driver: Optional[webdriver.Chrome] = None
     
-    #(Changing here) delete docker usage done
+    
     def initialize_driver(self) -> webdriver.Chrome:
         """Initialize and return a Chrome WebDriver instance"""
         chrome_options = Options()
@@ -32,15 +32,16 @@ class BrowserManager:
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-gpu")
-        
+
+
         try:
                 from webdriver_manager.chrome import ChromeDriverManager
                 service = Service(ChromeDriverManager().install())
                 print("[*] Using ChromeDriver from webdriver_manager")
         except ImportError:
                 raise RuntimeError(
-                    "ChromeDriver not found. Either run in Docker or install webdriver-manager: "
-                    "pip install webdriver-manager"
+                    "ChromeDriver not found. Either install webdriver-manager (pip install webdriver-manager) "
+                    "or provide chromedriver in the container at /usr/local/bin/chromedriver"
                 )
         
         self.driver = webdriver.Chrome(service=service, options=chrome_options)
@@ -53,7 +54,7 @@ class BrowserManager:
         if not self.driver:
             raise RuntimeError("Driver not initialized. Call initialize_driver() first.")
         
-        print(f"[*] Loading: {url}...")
+        print(f"[*] Loading: {url}")
         self.driver.get(url)
         time.sleep(wait_time or self.config.initial_load_wait)
     

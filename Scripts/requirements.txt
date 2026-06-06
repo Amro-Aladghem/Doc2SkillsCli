@@ -1,0 +1,15 @@
+selenium==4.15.2
+webdriver-manager==4.0.1
+beautifulsoup4==4.12.2
+lxml==4.9.3
+markdownify==0.11.6
+requests==2.31.0
+typing-extensions>=4.11.0
+fastapi==0.115.0
+uvicorn[standard]==0.24.0
+pydantic==2.9.0
+python-multipart==0.0.6
+google-genai==1.60.0
+platformdirs==4.10.0
+typer==0.9.0
+gunicorn==20.1.0
