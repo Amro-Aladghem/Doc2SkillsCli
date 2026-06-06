@@ -79,7 +79,7 @@ class ContentProcessor:
         
         # Format YAML frontmatter skill format
         header = f"""---
-            name: {skill_data.title}
+            name: {skill_data.file_name}
             description: {skill_data.description}
 ---
 """

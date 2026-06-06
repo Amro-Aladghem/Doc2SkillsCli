@@ -46,14 +46,19 @@ class FileManager:
         """
         Returns the full path and check
         """
-        path = Path(directory).expanduser().resolve()
+        base_path = Path(directory).expanduser().resolve()
 
-        if path.exists() and path.is_file():
+        if base_path.exists() and base_path.is_file():
             raise ValueError("Output path must be a directory.")
         
-        path.mkdir(parents=True, exist_ok=True)
+        skill_folder_name = Path(filename).stem
 
-        file_path = path / f"{filename}.md"
+        skill_dir_path = base_path / skill_folder_name
+
+        skill_dir_path.mkdir(parents=True, exist_ok=True)
+
+        file_path = skill_dir_path / "SKILL.md"
+    
         return str(file_path)
     
     def prepare_default_configfile(self)->bool:
